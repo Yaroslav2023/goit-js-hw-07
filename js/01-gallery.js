@@ -7,8 +7,6 @@ const cardsCreated = createGalleryCards(galleryItems);
 
 galleryLists.insertAdjacentHTML('afterbegin', cardsCreated);
 
-// console.log(createGalleryCards(galleryItems));
-
 function createGalleryCards(galleryItems) {
     return galleryItems.map(({ preview, original, description }) => {
         return `
@@ -29,15 +27,29 @@ galleryLists.addEventListener('click', onImegesClick);
 
 function onImegesClick (event) {
     event.preventDefault();
+    
     if(!event.target.classList.contains('gallery__image')) {
         return;
-    }
-    console.log(event.target);
+    };
+
     const originalImegeRef = event.target.dataset.source;
-    console.log(originalImegeRef);
 
     const instance = basicLightbox.create(`
     <img src="${originalImegeRef}" width="800" height="600">
     `);
     instance.show();
+
+    if(instance.show()) {
+        window.addEventListener('keydown', onCloseModal);
+
+        function onCloseModal (evt) {
+            if(evt.code !== 'Escape') {   
+            return;};
+
+            instance.close();
+            window.removeEventListener('keydown', onCloseModal);
+        
+        };
+        };
 };
+
