@@ -36,20 +36,20 @@ function onImegesClick (event) {
 
     const instance = basicLightbox.create(`
     <img src="${originalImegeRef}" width="800" height="600">
-    `);
-    instance.show();
+    `, { 
+        onShow: onShowCallBack,
+        onclose: onCloseCallBack, });
 
-    if(instance.show()) {
-        window.addEventListener('keydown', onCloseModal);
+        instance.show();
 
-        function onCloseModal (evt) {
-            if(evt.code !== 'Escape') {   
+
+    function onShowCallBack () {
+        window.addEventListener('keydown', (evt) => {if(evt.code !== 'Escape') {   
             return;};
-
-            instance.close();
-            window.removeEventListener('keydown', onCloseModal);
-        
-        };
-        };
-};
-
+            instance.close();});
+    };
+    
+    function onCloseCallBack () {
+        window.removeEventListener('keydown');
+    }   
+};     
